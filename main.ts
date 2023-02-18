@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const EnemyWeakspot = SpriteKind.create()
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed()) {
         animation.runImageAnimation(
@@ -42,7 +45,9 @@ controller.left.onEvent(ControllerButtonEvent.Released, function () {
     )
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-	
+    while (sprite.overlapsWith(otherSprite)) {
+        otherSprite.x += 0.1
+    }
 })
 let mySprite: Sprite = null
 tiles.setCurrentTilemap(tilemap`level2`)
@@ -50,6 +55,7 @@ scene.setBackgroundImage(assets.image`InfinityTKD`)
 music.play(music.createSong(assets.song`ImagineDragon1`), music.PlaybackMode.LoopingInBackground)
 mySprite = sprites.create(assets.image`AthleteBlue`, SpriteKind.Player)
 tiles.placeOnTile(mySprite, tiles.getTileLocation(1, 3))
+mySprite.z = 1
 mySprite.setStayInScreen(true)
 animation.runImageAnimation(
 mySprite,
@@ -57,7 +63,7 @@ assets.animation`BlueNeutral`,
 150,
 true
 )
-controller.moveSprite(mySprite, 50, 0)
+controller.moveSprite(mySprite, 20, 0)
 let myEnemy = sprites.create(assets.image`Godzillow`, SpriteKind.Enemy)
 tiles.placeOnTile(myEnemy, tiles.getTileLocation(4, 2))
 animation.runImageAnimation(
@@ -66,3 +72,6 @@ assets.animation`Godzilowanime`,
 400,
 true
 )
+game.onUpdateInterval(10, function () {
+    myEnemy.x += -0.2
+})
