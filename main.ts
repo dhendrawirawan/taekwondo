@@ -1,6 +1,32 @@
 namespace SpriteKind {
     export const EnemyWeakspot = SpriteKind.create()
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    animation.runImageAnimation(
+    mySprite,
+    assets.animation`HighKick`,
+    100,
+    false
+    )
+    Projectile2 = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . 2 2 2 2 . . . 
+        . . . . . . . 2 2 1 1 1 1 2 . . 
+        . . . . 2 2 3 3 1 1 1 1 1 1 . . 
+        . . 3 3 3 3 1 1 1 1 1 1 1 1 . . 
+        . . 1 1 1 1 1 1 1 1 1 1 1 1 . . 
+        . . 3 3 2 2 3 1 1 1 1 1 1 1 . . 
+        . . . . . . 2 2 3 1 1 1 1 2 . . 
+        . . . . . . . . . 2 2 2 2 . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, mySprite, 25, 0)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed()) {
         animation.runImageAnimation(
@@ -117,6 +143,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     statusbar2.value += -1
 })
 let projectile: Sprite = null
+let Projectile2: Sprite = null
 let statusbar2: StatusBarSprite = null
 let statusbar: StatusBarSprite = null
 let CountWeakSpot = 0
@@ -124,6 +151,7 @@ let myEnemy: Sprite = null
 let mySprite: Sprite = null
 tiles.setCurrentTilemap(tilemap`level2`)
 scene.setBackgroundImage(assets.image`InfinityTKD`)
+game.splash("Don't touch the enemy. Use the projectile from your three different kicks to hit all three of enemy's weak spots (the fire horn, crystal ball, and tri-fork tail) then you can damage the enemy.", "")
 music.play(music.createSong(assets.song`ImagineDragon1`), music.PlaybackMode.LoopingInBackground)
 mySprite = sprites.create(assets.image`AthleteBlue`, SpriteKind.Player)
 tiles.placeOnTile(mySprite, tiles.getTileLocation(2, 3))
