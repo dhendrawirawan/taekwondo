@@ -1,37 +1,30 @@
 namespace SpriteKind {
     export const EnemyWeakspot = SpriteKind.create()
+    export const SuperProjectile = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.SuperProjectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    if (CountWeakSpot == 0) {
+        statusbar.value += -5
+    }
+    myEnemy.x += 5
+    sprites.destroy(sprite, effects.trail, 100)
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     mySprite,
-    assets.animation`HighKick`,
-    100,
+    assets.animation`Hadoken`,
+    150,
     false
     )
-    Projectile2 = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . 2 2 2 2 . . . 
-        . . . . . . . 2 2 1 1 1 1 2 . . 
-        . . . . 2 2 3 3 1 1 1 1 1 1 . . 
-        . . 3 3 3 3 1 1 1 1 1 1 1 1 . . 
-        . . 1 1 1 1 1 1 1 1 1 1 1 1 . . 
-        . . 3 3 2 2 3 1 1 1 1 1 1 1 . . 
-        . . . . . . 2 2 3 1 1 1 1 2 . . 
-        . . . . . . . . . 2 2 2 2 . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, mySprite, 25, 0)
+    Projectile2 = sprites.createProjectileFromSide(assets.image`Hadouken`, 100, 0)
+    Projectile2.setKind(SpriteKind.SuperProjectile)
+    Projectile2.setPosition(-3, 28)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (controller.up.isPressed()) {
         animation.runImageAnimation(
         mySprite,
-        assets.animation`HighKick`,
+        assets.animation`HighBackKick`,
         100,
         false
         )
@@ -129,11 +122,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.EnemyWeakspot, function (spr
     CountWeakSpot += -1
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    myEnemy.x += 3
-    sprites.destroy(sprite, effects.halo, 100)
     if (CountWeakSpot == 0) {
         statusbar.value += -1
     }
+    myEnemy.x += 5
+    sprites.destroy(sprite, effects.trail, 100)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     while (sprite.overlapsWith(otherSprite)) {
@@ -149,6 +142,7 @@ let statusbar: StatusBarSprite = null
 let CountWeakSpot = 0
 let myEnemy: Sprite = null
 let mySprite: Sprite = null
+info.startCountdown(60)
 tiles.setCurrentTilemap(tilemap`level2`)
 scene.setBackgroundImage(assets.image`InfinityTKD`)
 game.splash("Don't touch the enemy. Use the projectile from your three different kicks to hit all three of enemy's weak spots (the fire horn, crystal ball, and tri-fork tail) then you can damage the enemy.", "")
@@ -232,7 +226,13 @@ game.onUpdate(function () {
         game.gameOver(true)
     }
 })
-game.onUpdateInterval(5000, function () {
+game.onUpdateInterval(10, function () {
+    myEnemy.x += -0.2
+    WeakSpotTop.setPosition(myEnemy.x + -15, myEnemy.y + -28)
+    WeakspotMiddle.setPosition(myEnemy.x + -16, myEnemy.y + 4)
+    WeakSpotBottom.setPosition(myEnemy.x + -24, myEnemy.y + 16)
+})
+game.onUpdateInterval(8000, function () {
     if (CountWeakSpot == 0) {
         WeakSpotTop = sprites.create(img`
             4 . . . . . . . . . . . 
@@ -278,10 +278,4 @@ game.onUpdateInterval(5000, function () {
             `, SpriteKind.EnemyWeakspot)
         CountWeakSpot = 3
     }
-})
-game.onUpdateInterval(10, function () {
-    myEnemy.x += -0.2
-    WeakSpotTop.setPosition(myEnemy.x + -15, myEnemy.y + -28)
-    WeakspotMiddle.setPosition(myEnemy.x + -16, myEnemy.y + 4)
-    WeakSpotBottom.setPosition(myEnemy.x + -24, myEnemy.y + 16)
 })
