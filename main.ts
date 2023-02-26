@@ -19,7 +19,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             animation.runImageAnimation(
             mySprite,
             assets.animation`HighBlock`,
-            150,
+            100,
             false
             )
         } else if (controller.down.isPressed()) {
@@ -29,13 +29,13 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             animation.runImageAnimation(
             mySprite,
             assets.animation`Punch`,
-            150,
+            100,
             false
             )
-            mySprite.setPosition(mySprite.x + 3, mySprite.y)
+            mySprite.setPosition(mySprite.x + -3, mySprite.y)
         }
     })
-    timer.after(1000, function () {
+    timer.after(500, function () {
         controller.moveSprite(mySprite, 30, 20)
         mySprite.setKind(SpriteKind.Player)
     })
