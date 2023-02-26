@@ -1,5 +1,5 @@
 {
-    "name": "taekwondo2",
+    "name": "taekwondo_adventures",
     "description": "",
     "dependencies": {
         "device": "*",
@@ -21,7 +21,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.12.21",
+        "target": "1.12.22",
         "targetId": "arcade"
     },
     "supportedTargets": [
