@@ -4,13 +4,6 @@ namespace SpriteKind {
     export const AttackingPlayer = SpriteKind.create()
     export const DefendingPlayer = SpriteKind.create()
 }
-sprites.onOverlap(SpriteKind.SuperProjectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    if (CountWeakSpot == 0) {
-        statusbar.value += -5
-    }
-    myEnemy.x += 5
-    sprites.destroy(sprite, effects.trail, 100)
-})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     timer.throttle("action", 500, function () {
         controller.moveSprite(mySprite, 0, 0)
@@ -75,31 +68,27 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         })
     })
 })
-controller.right.onEvent(ControllerButtonEvent.Released, function () {
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     mySprite,
-    assets.animation`BlueNeutral`,
+    assets.animation`BlueNeutralLeft`,
     150,
     true
     )
-})
-controller.left.onEvent(ControllerButtonEvent.Released, function () {
-    animation.runImageAnimation(
-    mySprite,
-    assets.animation`BlueNeutral`,
-    150,
-    true
-    )
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.EnemyWeakspot, function (sprite, otherSprite) {
-    sprites.destroy(otherSprite, effects.spray, 500)
-    CountWeakSpot += -1
 })
 sprites.onOverlap(SpriteKind.AttackingPlayer, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (CountWeakSpot == 0) {
         statusbar.value += -1
     }
     myEnemy.x += 5
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    animation.runImageAnimation(
+    mySprite,
+    assets.animation`BlueNeutral`,
+    150,
+    true
+    )
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     while (sprite.overlapsWith(otherSprite)) {
@@ -333,16 +322,15 @@ true
 )
 controller.moveSprite(mySprite, 50, 40)
 myEnemy = sprites.create(assets.image`Godzillow`, SpriteKind.Enemy)
-myEnemy.setPosition(100, 210)
-myEnemy.setStayInScreen(false)
-myEnemy.setScale(0.8, ScaleAnchor.Middle)
 animation.runImageAnimation(
 myEnemy,
 assets.animation`Godzilowanime`,
-400,
+500,
 true
 )
 myEnemy.follow(mySprite, 10)
+myEnemy.setPosition(100, 210)
+myEnemy.setStayInScreen(false)
 statusbar = statusbars.create(4, 20, StatusBarKind.Health)
 statusbar.attachToSprite(myEnemy, -10, -5)
 statusbar.positionDirection(CollisionDirection.Right)
